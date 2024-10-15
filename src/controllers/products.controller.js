@@ -1,6 +1,6 @@
 import productsManager from "../data/managers/products.manager.js";
 
-const create = async (req,res,next) => {
+const create = async (req, res, next) => {
     try {
         const data = req.body;
         const response = await productsManager.create(data);
@@ -10,17 +10,23 @@ const create = async (req,res,next) => {
     }
 };
 
-const readAll = async (req, res, next) => { 
+const readAll = async (req, res, next) => {
     try {
         const filter = req.query;
         const response = await productsManager.readAll(filter);
-        return res.status(200).json({ response, message: "PRODUCTS READ" });
+        if (response.length > 0) {
+            return res.status(200).json({ response, message: "PRODUCTS READ" });
+        } else {
+            const error = new Error("NOT FOUND PRODUCTS")
+            error.statusCode = 404
+            throw error
+        }
     } catch (error) {
         return next(error);
     }
 };
 
-const readById = async (req, res, next) => {   
+const readById = async (req, res, next) => {
     try {
         const id = req.params.pid;
         const response = await productsManager.read(id);
@@ -31,7 +37,7 @@ const readById = async (req, res, next) => {
     }
 };
 
-const updateById = async (req, res, next) => {  
+const updateById = async (req, res, next) => {
     try {
         const id = req.params.pid;
         const data = req.body;
@@ -43,7 +49,7 @@ const updateById = async (req, res, next) => {
     }
 };
 
-const deleteById = async (req, res, next) => { 
+const deleteById = async (req, res, next) => {
     try {
         const id = req.params.pid;
         const response = await productsManager.destroy(id);

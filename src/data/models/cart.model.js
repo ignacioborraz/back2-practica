@@ -8,5 +8,15 @@ const schema = new Schema({
     state: { type: String, default: "reserved", enum: ["reserved", "paid", "delivered"] }
 })
 
+schema.pre("create", function () {
+    this.populate("user_id", "email")
+    this.populate("product_id")
+})
+
+schema.pre("find", function () {
+    this.populate("user_id", "email")
+    this.populate("product_id")
+})
+
 const Cart = model(collection, schema)
 export default Cart

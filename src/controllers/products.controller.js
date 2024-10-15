@@ -14,7 +14,13 @@ const readAll = async (req, res, next) => {
     try {
         const filter = req.query;
         const response = await productsManager.readAll(filter);
-        return res.status(200).json({ response, message: "PRODUCTS READ" });
+        if (response.length > 0) {
+            return res.status(200).json({ response, message: "PRODUCTS READ" });
+        } else {
+            const error = new Error("NOT FOUND PRODUCTS")
+            error.statusCode = 404
+            throw error
+        }
     } catch (error) {
         return next(error);
     }

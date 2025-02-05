@@ -11,7 +11,7 @@ import __dirname from "./utils.js"
 
 /* server */
 const server = express();
-const port = 8080;
+const port = process.env.PORT;
 const ready = async () => {
   console.log("server is ready on port " + port);
   await dbConnect();
@@ -30,6 +30,8 @@ server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 server.use(express.static("public"));
 server.use(cookieParser(process.env.COOKIE_KEY));
+
+/* endpoints */
 server.use("/", router);
 server.use(errorHandler);
 server.use(pathHandler);

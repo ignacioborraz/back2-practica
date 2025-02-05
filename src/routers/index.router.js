@@ -5,6 +5,6 @@ import viewsRouter from "./views.router.js";
 const router = Router();
 
 router.use("/", viewsRouter);
-router.use("/users", usersRouter);
+router.use("/api/users", usersRouter);
 
 export default router;
